@@ -1,7 +1,6 @@
 package server
 
 import (
-	"context"
 	"log"
 	"net/http"
 
@@ -30,6 +29,7 @@ func (s *Server) StartServer() {
 
 func (s *Server) SetupRoutes() {
 	s.router.Route("/", func(r chi.Router) {
-		r.Post("/", s.YouTubeSearch(context.Background()))
+		r.Post("/", s.YouTubeSearch())
+		r.Get("/", s.GetVideos())
 	})
 }

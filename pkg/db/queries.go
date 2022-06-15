@@ -33,3 +33,22 @@ func (s *Store) InsertVideos(videos []yt.VideoMetadata) (rowsAffected int, err e
 	}
 	return
 }
+
+func (s *Store) GetVideos(limit, offset int) ([]yt.VideoMetadata, error) {
+	query := "SELECT * FROM videos ORDER BY published_at DESC LIMIT $1 OFFSET $2"
+	rows, err := s.pool.Query(context.TODO(), query, limit, offset)
+	if err != nil {
+		log.Println(err)
+		return []yt.VideoMetadata{}, err
+	}
+	defer rows.Close()
+	var videos []yt.VideoMetadata
+	for rows.Next() {
+		var video yt.VideoMetadata
+		if err := rows.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL); err != nil {
+			log.Println(err)
+		}
+		videos = append(videos, video)
+	}
+	return videos, nil
+}
