@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/neel229/fampay-assignment/pkg/db"
 	"github.com/neel229/fampay-assignment/pkg/utils"
 )
@@ -28,6 +29,9 @@ func (s *Server) StartServer() {
 }
 
 func (s *Server) SetupRoutes() {
+	s.router.Use(middleware.Logger)
+	s.router.Use(middleware.Recoverer)
+
 	s.router.Route("/", func(r chi.Router) {
 		r.Post("/", s.YouTubeSearch())
 		r.Get("/", s.GetVideos())
