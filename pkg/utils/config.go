@@ -9,6 +9,7 @@ import (
 // Config contains project's
 // configuration variables
 type Config struct {
+	DBURL        string `mapstructure:"DB_URL"`
 	GoogleAPIKey string `mapstructure:"GOOGLE_API_KEY"`
 	Port         string `mapstructure:"PORT"`
 	TimeInterval string `mapstructure:"TIME_INTERVAL"`

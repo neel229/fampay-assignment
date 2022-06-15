@@ -26,12 +26,10 @@ func GetClient() *youtube.Service {
 
 func TestYTSearch(t *testing.T) {
 	client := GetClient()
-	const maxResults = 10
-	sq := yt.SearchQuery{Keyword: "dogs", MaxResults: maxResults}
+	sq := yt.SearchQuery{Keyword: "dogs"}
 	videos, err := yt.Search(client, sq)
 	require.NoError(t, err)
 	require.NotEmpty(t, videos)
-	require.Equal(t, 10, len(videos))
 
 	for _, video := range videos {
 		require.NotEmpty(t, video.Title)
