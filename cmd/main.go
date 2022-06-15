@@ -12,7 +12,7 @@ import (
 	"github.com/neel229/fampay-assignment/pkg/utils"
 )
 
-const tickRate = 10 * time.Second
+const tickRate = 10 * time.Minute
 
 func main() {
 	config, err := utils.LoadConfig(".")
@@ -34,6 +34,7 @@ func main() {
 }
 
 func bgSearch(keyword string, svr *server.Server) {
+	svr.YouTubeServerSearch(keyword)
 	ticker := time.NewTicker(tickRate).C
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
