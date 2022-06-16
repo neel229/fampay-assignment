@@ -75,3 +75,23 @@ func (s *Store) SearchWithDescription(title string) (yt.VideoMetadata, error) {
 	}
 	return video, nil
 }
+
+func (s *Store) FullTextSearch(keyword string) ([]yt.VideoMetadata, error) {
+	query := `SELECT * FROM videos WHERE tsv @@ plainto_tsquery($1)`
+	rows, err := s.pool.Query(context.TODO(), query, keyword)
+	if err != nil {
+		log.Printf("error fetching rows: %v\n", err)
+		return []yt.VideoMetadata{}, err
+	}
+	defer rows.Close()
+	var videos []yt.VideoMetadata
+	for rows.Next() {
+		var video yt.VideoMetadata
+		if err := rows.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL, nil); err != nil {
+			log.Println(err)
+			return []yt.VideoMetadata{}, err
+		}
+		videos = append(videos, video)
+	}
+	return videos, nil
+}

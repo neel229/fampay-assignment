@@ -64,3 +64,20 @@ func (s *Server) SearchWithDescription() http.HandlerFunc {
 		json.NewEncoder(w).Encode(video)
 	}
 }
+
+func (s *Server) FullTextSearch() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var input struct {
+			Keyword string `json:"keyword"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+			http.Error(w, "bad request", http.StatusBadRequest)
+		}
+		videos, err := s.store.FullTextSearch(input.Keyword)
+		if err != nil {
+			http.Error(w, "error fetching videos, try again later...", http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(w).Encode(videos)
+	}
+}
