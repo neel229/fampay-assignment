@@ -13,6 +13,7 @@ type Config struct {
 	GoogleAPIKey string `mapstructure:"GOOGLE_API_KEY"`
 	Port         string `mapstructure:"PORT"`
 	TimeInterval string `mapstructure:"TIME_INTERVAL"`
+	TickRate     int    `mapstructure:"TICK_RATE"`
 }
 
 // LoadConfig loads the config variables and returns

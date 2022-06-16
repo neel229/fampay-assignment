@@ -12,8 +12,6 @@ import (
 	"github.com/neel229/fampay-assignment/pkg/utils"
 )
 
-const tickRate = 10 * time.Minute
-
 func main() {
 	config, err := utils.LoadConfig(".")
 	if err != nil {
@@ -29,11 +27,12 @@ func main() {
 
 	// background search for football keyword
 	// with an interval of 10 seconds
-	go bgSearch("football", svr)
+	tickRate := time.Second * time.Duration(config.TickRate)
+	go bgSearch(tickRate, "football", svr)
 	svr.StartServer()
 }
 
-func bgSearch(keyword string, svr *server.Server) {
+func bgSearch(tickRate time.Duration, keyword string, svr *server.Server) {
 	svr.YouTubeServerSearch(keyword)
 	ticker := time.NewTicker(tickRate).C
 	c := make(chan os.Signal)
