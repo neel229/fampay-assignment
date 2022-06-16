@@ -45,7 +45,7 @@ func (s *Store) GetVideos(limit, offset int) ([]yt.VideoMetadata, error) {
 	var videos []yt.VideoMetadata
 	for rows.Next() {
 		var video yt.VideoMetadata
-		if err := rows.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL); err != nil {
+		if err := rows.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL, nil); err != nil {
 			log.Println(err)
 			return []yt.VideoMetadata{}, err
 		}
@@ -58,7 +58,7 @@ func (s *Store) SearchWithTitle(title string) (yt.VideoMetadata, error) {
 	query := "SELECT * FROM videos WHERE title = $1"
 	row := s.pool.QueryRow(context.TODO(), query, title)
 	var video yt.VideoMetadata
-	if err := row.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL); err != nil {
+	if err := row.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL, nil); err != nil {
 		log.Println(err)
 		return yt.VideoMetadata{}, err
 	}
@@ -69,7 +69,7 @@ func (s *Store) SearchWithDescription(title string) (yt.VideoMetadata, error) {
 	query := "SELECT * FROM videos WHERE description = $1"
 	row := s.pool.QueryRow(context.TODO(), query, title)
 	var video yt.VideoMetadata
-	if err := row.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL); err != nil {
+	if err := row.Scan(nil, &video.Title, &video.ID, &video.Description, &video.PublishedAt, &video.ThumbnailURL, nil); err != nil {
 		log.Println(err)
 		return yt.VideoMetadata{}, err
 	}
