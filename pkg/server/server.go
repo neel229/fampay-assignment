@@ -36,7 +36,7 @@ func (s *Server) SetupRoutes() {
 		r.Post("/", s.YouTubeSearch())
 		r.Get("/", s.GetVideos())
 		r.Post("/title", s.SearchWithTitle())
-		r.Post("/description", s.SearchWithTitle())
+		r.Post("/description", s.SearchWithDescription())
 		r.Post("/fts", s.FullTextSearch())
 	})
 }
